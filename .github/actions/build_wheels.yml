@@ -1,0 +1,35 @@
+name: Build Wheels
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build-wheels:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"  # This is a placeholder; cibuildwheel will install specific versions
+
+      - name: Install cibuildwheel
+        run: pip install cibuildwheel
+
+      - name: Build wheels
+        env:
+          CIBW_PLATFORM: ${{ runner.os == 'Windows' && echo "windows" || runner.os == 'Darwin' && echo "macos" || echo "linux" }}
+        run: cibuildwheel --output-dir wheelhouse .
+
+      - name: Upload built wheels
+        uses: actions/upload-artifact@v3
+        with:
+          name: wheels
+          path: wheelhouse/*.whl

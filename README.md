@@ -34,3 +34,9 @@ b'\xffs\xd95>\xa0\xf6Y\xcd\\\r\xb9\x0e"\x9c|\x03<\x84\xd8\x04e\x8f-\xd4\x0eo<\xc
 
 ## Installation
 ```pip install resumablesha256```
+
+## Speed
+Because the sha256 implementation is written in C, it is orders of magnitude
+faster than an equivalent Python implementation. However, note that it is
+2.4x slower than hashlib.sha256 when testing against large data in large
+chunks.
