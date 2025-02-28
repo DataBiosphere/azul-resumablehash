@@ -26,7 +26,7 @@ jobs:
 
       - name: Build wheels
         env:
-          CIBW_PLATFORM: ${{ runner.os == 'Windows' && echo "windows" || runner.os == 'Darwin' && echo "macos" || echo "linux" }}
+          CIBW_PLATFORM: ${{ runner.os == 'Windows' && 'windows' || runner.os == 'macOS' && 'macos' || 'linux' }}
         run: cibuildwheel --output-dir wheelhouse .
 
       - name: Upload built wheels
