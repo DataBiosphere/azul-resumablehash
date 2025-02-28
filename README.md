@@ -2,7 +2,14 @@
 A Python sha256 hasher whose state can be saved and loaded, using B-Con's sha256 C implementation for speed.
 
 ## Motivation
-When computing an sha256 of data as it is streamed, for example to a web server, there may be times when the next chunk of data will be received in a different request. When you don't want to or cannot rehash the data that has already been received, you can save out the current state of the hasher after digesting the last chunk, then load the state before handling the request with the newest chunk.
+Use this library when computing an sha256 hash when you must digest the file
+in chunks, and the lifetime of the hasher object cannot persist between chunks.
+
+For example, you might be implementing a webserver where data is streamed to
+the server from the client as the file grows on the client computer, so the
+next chunk of data will be received in a different request. You can save out
+the current state of the hasher after digesting the last chunk, then load the
+state before handling the request with the newest chunk.
 
 ## Usage
 For reference, here is how to create an sha256 hash using Python's standard libraries:
