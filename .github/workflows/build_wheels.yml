@@ -11,21 +11,15 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest, macos-13, macos-latest]
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-
-      - name: Install cibuildwheel
-        run: pip install cibuildwheel
-
       - name: Build wheels
-        run: python -m cibuildwheel --output-dir wheelhouse
+        uses: pypa/cibuildwheel@v2.22.0
 
       - name: Upload built wheels
         uses: actions/upload-artifact@v4
         with:
           name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
-          path: wheelhouse/*.whl
+          path: ./wheelhouse/*.whl
