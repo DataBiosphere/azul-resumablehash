@@ -17,7 +17,7 @@ classifiers = [
 ]
 dependencies = []
 license = "Unlicense"
-license-files = ["LICENSE.txt"]
+license-files = { include = ["LICENSE.txt"] }
 
 [project.urls]
 Homepage = "https://github.com/luke-moore/resumablesha256/"
