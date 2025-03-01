@@ -1,6 +1,6 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "resumablesha256"
@@ -16,21 +16,11 @@ classifiers = [
     "Operating System :: OS Independent"
 ]
 dependencies = []
-license = "Unlicense"
-license-files = { include = ["LICENSE.txt"] }
+license = {text = "Unlicense"}
 
 [project.urls]
 Homepage = "https://github.com/luke-moore/resumablesha256/"
 
-[tool.hatch.build.targets.wheel]
-universal = false
-
-[tool.hatch.build.extensions.resumablesha256._sha256_ext]
-sources = [
-    "resumablesha256/_sha256_ext.c",
-    "resumablesha256/bcon_sha256.c"
-]
-extra_compile_args = ["-O3"]
-
-[tool.hatch.build.package-data]
-resumablesha256 = ["bcon_sha256.h"]
+[tool.cibuildwheel]
+test-requires = "pytest"
+test-command = "pytest {project}/tests"

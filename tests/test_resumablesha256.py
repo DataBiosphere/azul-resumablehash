@@ -63,7 +63,8 @@ class TestSHA256(unittest.TestCase):
         h2 = hashlib.sha256()
         random.seed(234230)
         for i in range(200):
-            chunk = random.randint(0, 255).to_bytes() * random.randint(1, 30)
+            chunk = (random.randint(0, 255).to_bytes(length=1, byteorder="big")
+                * random.randint(1, 30))
             h1.update(chunk)
             h2.update(chunk)
             self.assertEqual(h1.digest(), h2.digest())
