@@ -1,18 +1,26 @@
 # resumablesha256
-A Python sha256 hasher whose state can be saved and loaded, using B-Con's sha256 C implementation for speed.
+A Python sha256 hasher whose state can be saved and loaded by pickling. It is
+otherwise a  drop-in replacement for hashlib.sha256(). It uses B-Con's sha256 C
+implementation for speed.
 
 ## Motivation
-Use this library when computing an sha256 hash when you must digest the file
-in chunks, and the lifetime of the hasher object cannot persist between chunks.
+When working with large files or streaming data, you might not always have a
+single, continuous session to compute a hash. For instance, in a web server
+handling file uploads, data can arrive in multiple HTTP requests as the file
+grows on the client side. With resumablesha256, you can:
 
-For example, you might be implementing a webserver where data is streamed to
-the server from the client as the file grows on the client computer, so the
-next chunk of data will be received in a different request. You can save out
-the current state of the hasher after digesting the last chunk, then load the
-state before handling the request with the newest chunk.
+- Process incoming data in manageable chunks.
+- Save the current state of the hash computation.
+- Resume the hash calculation later, even across different sessions or processes.
+
+## Installation
+```bash
+pip install resumablesha256
+```
 
 ## Usage
-For reference, here is how to create an sha256 hash using Python's standard libraries:
+For reference, here is how to create an sha256 hash using Python's standard
+library:
 ```python
 >>> import hashlib
 >>> hasher = hashlib.sha256()
@@ -39,11 +47,11 @@ b'\xffs\xd95>\xa0\xf6Y\xcd\\\r\xb9\x0e"\x9c|\x03<\x84\xd8\x04e\x8f-\xd4\x0eo<\xc
 'ff73d9353ea0f659cd5c0db90e229c7c033c84d804658f2dd40e6f3cc9092066'
 ```
 
-## Installation
-```pip install resumablesha256```
+## Performance
+Because the sha256 implementation is written in C, it is significantly faster
+than an equivalent pure Python implementation. However, when processing large
+data chunks, it is approximately 2.5x slower than `hashlib.sha256`.
 
-## Speed
-Because the sha256 implementation is written in C, it is orders of magnitude
-faster than an equivalent Python implementation. However, note that it is
-2.4x slower than hashlib.sha256 when testing against large data in large
-chunks.
+## Acknowledgements
+Thank you to Brad Conte for his public domain implementation of sha256
+at https://github.com/B-Con/crypto-algorithms/tree/master.
