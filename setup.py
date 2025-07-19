@@ -13,7 +13,7 @@ setup(
         "resumablesha256._sha256_ext",
         [
             "src_ext/_sha256_ext.c",
-            "src_ext/bcon_sha256.c"
+            "src_ext/bcon/sha256.c"
         ],
         include_dirs=["src_ext"],
         py_limited_api=True)

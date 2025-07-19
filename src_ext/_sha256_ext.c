@@ -31,7 +31,7 @@
 
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
-#include "bcon_sha256.h"
+#include "bcon/sha256.h"
 
 typedef struct {
     PyObject_HEAD
