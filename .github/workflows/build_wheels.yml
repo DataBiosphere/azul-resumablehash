@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.22.0
+        uses: pypa/cibuildwheel@v3.0.1
 
       - name: Upload built wheels
         uses: actions/upload-artifact@v4
