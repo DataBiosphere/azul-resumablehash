@@ -3,7 +3,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "resumablesha256"
+name = "resumablehash"
 version = "1.0+2"
 description = "A resumable SHA-256 hasher using B-Con's sha256 C implementation"
 authors = [
@@ -20,7 +20,7 @@ dependencies = []
 license = "Unlicense"
 
 [project.urls]
-Homepage = "https://github.com/luke-moore/resumablesha256/"
+Homepage = "https://github.com/DataBiosphere/azul-resumablehash/"
 
 [tool.cibuildwheel]
 test-requires = "pytest"

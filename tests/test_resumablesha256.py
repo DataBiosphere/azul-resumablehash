@@ -2,7 +2,7 @@ import unittest
 import pickle
 import hashlib
 import random
-from resumablesha256 import sha256
+from resumablehash import sha256
 
 
 class TestSHA256(unittest.TestCase):

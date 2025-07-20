@@ -1,7 +1,7 @@
 /*********************************************************************
 * Filename:   _sha256_ext.c
 * Author:     Luke Moore
-* Project:    https://github.com/luke-moore/resumablesha256/
+* Project:    https://github.com/DataBiosphere/azul-resumablehash/
 * License:
     This is free and unencumbered software released into the public domain.
 
@@ -40,7 +40,7 @@ typedef struct {
 
 
 static PyObject *
-resumablesha256_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+resumablehash_sha256_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
     SHA256Object *self;
     self = (SHA256Object *)type->tp_alloc(type, 0);
@@ -73,13 +73,13 @@ resumablesha256_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 }
 
 static void
-resumablesha256_dealloc(SHA256Object *self)
+resumablehash_sha256_dealloc(SHA256Object *self)
 {
     Py_TYPE(self)->tp_free((PyObject *)self);
 }
 
 static PyObject *
-resumablesha256_update(SHA256Object *self, PyObject *args)
+resumablehash_sha256_update(SHA256Object *self, PyObject *args)
 {
     const char *data;
     Py_ssize_t len;
@@ -91,7 +91,7 @@ resumablesha256_update(SHA256Object *self, PyObject *args)
 }
 
 static PyObject *
-resumablesha256_digest(SHA256Object *self, PyObject *Py_UNUSED(ignored))
+resumablehash_sha256_digest(SHA256Object *self, PyObject *Py_UNUSED(ignored))
 {
     // Create a copy of the context so that we don’t change the state.
     unsigned char hash[32];
@@ -101,7 +101,7 @@ resumablesha256_digest(SHA256Object *self, PyObject *Py_UNUSED(ignored))
 }
 
 static PyObject *
-resumablesha256_hexdigest(SHA256Object *self, PyObject *Py_UNUSED(ignored))
+resumablehash_sha256_hexdigest(SHA256Object *self, PyObject *Py_UNUSED(ignored))
 {
     unsigned char hash[32];
     char hex_output[65];
@@ -115,14 +115,14 @@ resumablesha256_hexdigest(SHA256Object *self, PyObject *Py_UNUSED(ignored))
 }
 
 static PyObject *
-resumablesha256_getstate(SHA256Object *self, PyObject *Py_UNUSED(ignored))
+resumablehash_sha256_getstate(SHA256Object *self, PyObject *Py_UNUSED(ignored))
 {
     return PyBytes_FromStringAndSize(
         (const char *)&self->ctx, sizeof(SHA256_CTX));
 }
 
 static PyObject *
-resumablesha256_setstate(SHA256Object *self, PyObject *state)
+resumablehash_sha256_setstate(SHA256Object *self, PyObject *state)
 {
     char *buf;
     Py_ssize_t len;
@@ -138,7 +138,7 @@ resumablesha256_setstate(SHA256Object *self, PyObject *state)
 }
 
 static PyObject *
-resumablesha256_copy(SHA256Object *self, PyObject *Py_UNUSED(ignored))
+resumablehash_sha256_copy(SHA256Object *self, PyObject *Py_UNUSED(ignored))
 {
     SHA256Object *new_obj = PyObject_New(SHA256Object, Py_TYPE(self));
     if (new_obj == NULL)
@@ -148,65 +148,65 @@ resumablesha256_copy(SHA256Object *self, PyObject *Py_UNUSED(ignored))
 }
 
 static PyObject *
-resumablesha256_get_digest_size(SHA256Object *self, void *closure)
+resumablehash_sha256_get_digest_size(SHA256Object *self, void *closure)
 {
     return PyLong_FromLong(32);
 }
 
 static PyObject *
-resumablesha256_get_block_size(SHA256Object *self, void *closure)
+resumablehash_sha256_get_block_size(SHA256Object *self, void *closure)
 {
     return PyLong_FromLong(64);
 }
 
 static PyObject *
-resumablesha256_get_name(SHA256Object *self, void *closure)
+resumablehash_sha256_get_name(SHA256Object *self, void *closure)
 {
     return PyUnicode_FromString("sha256");
 }
 
-static PyGetSetDef resumablesha256_getsetters[] = {
-    {"digest_size", (getter)resumablesha256_get_digest_size, NULL,
+static PyGetSetDef resumablehash_sha256_getsetters[] = {
+    {"digest_size", (getter)resumablehash_sha256_get_digest_size, NULL,
         "digest size", NULL},
-    {"block_size",  (getter)resumablesha256_get_block_size, NULL,
+    {"block_size",  (getter)resumablehash_sha256_get_block_size, NULL,
         "block size", NULL},
-    {"name", (getter)resumablesha256_get_name, NULL,
+    {"name", (getter)resumablehash_sha256_get_name, NULL,
         "hash name", NULL},
     {NULL}
 };
 
-static PyMethodDef resumablesha256_methods[] = {
-    {"update", (PyCFunction)resumablesha256_update, METH_VARARGS,
+static PyMethodDef resumablehash_sha256_methods[] = {
+    {"update", (PyCFunction)resumablehash_sha256_update, METH_VARARGS,
         "Update the hash with data"},
-    {"digest", (PyCFunction)resumablesha256_digest, METH_NOARGS,
+    {"digest", (PyCFunction)resumablehash_sha256_digest, METH_NOARGS,
         "Return the binary digest"},
-    {"hexdigest", (PyCFunction)resumablesha256_hexdigest, METH_NOARGS,
+    {"hexdigest", (PyCFunction)resumablehash_sha256_hexdigest, METH_NOARGS,
         "Return the hexadecimal digest"},
-    {"__getstate__", (PyCFunction)resumablesha256_getstate, METH_NOARGS,
+    {"__getstate__", (PyCFunction)resumablehash_sha256_getstate, METH_NOARGS,
         "Return internal state for pickling"},
-    {"__setstate__", (PyCFunction)resumablesha256_setstate, METH_O,
+    {"__setstate__", (PyCFunction)resumablehash_sha256_setstate, METH_O,
         "Restore internal state from pickled data"},
-    {"copy", (PyCFunction)resumablesha256_copy, METH_NOARGS,
+    {"copy", (PyCFunction)resumablehash_sha256_copy, METH_NOARGS,
         "Return a copy of the hash object"},
     {NULL, NULL, 0, NULL}
 };
 
 static PyTypeObject SHA256Type = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    .tp_name = "resumablesha256.sha256",
+    .tp_name = "resumablehash.sha256",
     .tp_doc = "Resumable sha256 hash objects",
     .tp_basicsize = sizeof(SHA256Object),
     .tp_itemsize = 0,
     .tp_flags = Py_TPFLAGS_DEFAULT,
-    .tp_new = resumablesha256_new,
-    .tp_dealloc = (destructor)resumablesha256_dealloc,
-    .tp_methods = resumablesha256_methods,
-    .tp_getset = resumablesha256_getsetters,
+    .tp_new = resumablehash_sha256_new,
+    .tp_dealloc = (destructor)resumablehash_sha256_dealloc,
+    .tp_methods = resumablehash_sha256_methods,
+    .tp_getset = resumablehash_sha256_getsetters,
 };
 
-static PyModuleDef resumablesha256module = {
+static PyModuleDef resumablehash_sha256_module = {
     PyModuleDef_HEAD_INIT,
-    "resumablesha256_ext",
+    "resumablehash._sha256_ext",
     "An SHA-256 implementation whose state can be saved and loaded",
     -1,
     NULL, NULL, NULL, NULL, NULL
@@ -219,7 +219,7 @@ PyInit__sha256_ext(void)
     if (PyType_Ready(&SHA256Type) < 0)
         return NULL;
 
-    m = PyModule_Create(&resumablesha256module);
+    m = PyModule_Create(&resumablehash_sha256_module);
     if (m == NULL)
         return NULL;
 
