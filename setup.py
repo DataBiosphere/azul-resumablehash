@@ -7,7 +7,7 @@ from setuptools import (
 # to specify the name and version, pyproject.toml is only supported in >=61.0.
 setup(
     name="resumablehash",
-    version="1.0+2",
+    version="1.1",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     include_package_data=False,
