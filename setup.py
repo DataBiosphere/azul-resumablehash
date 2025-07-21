@@ -10,7 +10,7 @@ setup(
     version="1.1",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
-    include_package_data=False,
+    package_data={"": ["*.pyi", "py.typed"]},
     ext_modules=[
         Extension(
             "resumablehash._sha256_ext",
