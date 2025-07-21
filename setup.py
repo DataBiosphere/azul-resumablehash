@@ -6,8 +6,6 @@ from setuptools import (
 # Note that for Python 3.6, which only supports setuptools<=59.6.0, we need
 # to specify the name and version, pyproject.toml is only supported in >=61.0.
 setup(
-    name="resumablehash",
-    version="1.1",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     package_data={"": ["*.pyi", "py.typed"]},
