@@ -1,3 +1,11 @@
+Note that this fork is intended for internal use by UCSC Azul team. The license
+is the same as for the upstream. Upstream copied the C implementation of SHA-256
+from https://github.com/B-Con/crypto-algorithms, wheras we replaced that with a
+Git submodule. We then added support for MD5 by blatantly copying and then
+modifying the SHA-256 parts. We renamed the repository, and we don't currently
+publish on PyPI, nor do we intend to, to avoid confusion with upstream. Again,
+this is for our internal use only. Below is the original upstream README.
+
 # resumablehash
 A Python sha256 hasher whose state can be saved and loaded by pickling. It is
 otherwise a  drop-in replacement for hashlib.sha256(). It uses B-Con's sha256 C
