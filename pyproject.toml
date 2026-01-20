@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "resumablehash"
-version = "1.3"
+version = "1.4"
 description = "Resumable hashers using B-Con's C implementations of SHA-256 and MD-5"
 authors = [
     {name = "Luke Moore"},
