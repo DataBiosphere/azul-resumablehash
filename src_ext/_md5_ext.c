@@ -81,12 +81,15 @@ resumablehash_md5_dealloc(MD5Object *self)
 static PyObject *
 resumablehash_md5_update(MD5Object *self, PyObject *args)
 {
-    const char *data;
-    Py_ssize_t len;
+    Py_buffer data;
 
-    if (!PyArg_ParseTuple(args, "s#", &data, &len))
+    // `y*` accepts any object implementing the buffer protocol, writable ones
+    // included, so that callers can hash a `bytearray` or a `memoryview` of
+    // one without copying it first. It rejects `str`, as the constructor does.
+    if (!PyArg_ParseTuple(args, "y*", &data))
         return NULL;
-    md5_update(&self->ctx, (const unsigned char *)data, (size_t)len);
+    md5_update(&self->ctx, (const unsigned char *)data.buf, (size_t)data.len);
+    PyBuffer_Release(&data);
     Py_RETURN_NONE;
 }
 
