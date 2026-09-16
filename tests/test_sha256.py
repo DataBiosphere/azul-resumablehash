@@ -72,5 +72,31 @@ class TestSHA256(unittest.TestCase):
             h1 = pickle.loads(pickle.dumps(h1))
 
 
+    def test_buffer_protocol(self):
+        payload = b"the quick brown fox" * 1000
+        expected = hashlib.sha256(payload).hexdigest()
+        for buffer in [payload,
+                       bytearray(payload),
+                       memoryview(bytearray(payload)),
+                       memoryview(bytearray(payload)).toreadonly()]:
+            with self.subTest(type=type(buffer).__name__):
+                h = sha256()
+                h.update(buffer)
+                self.assertEqual(expected, h.hexdigest())
+
+    def test_buffer_slice(self):
+        payload = bytearray(b"the quick brown fox" * 1000)
+        view = memoryview(payload)
+        h = sha256()
+        for offset in range(0, len(view), 1024):
+            h.update(view[offset:offset + 1024])
+        self.assertEqual(hashlib.sha256(bytes(payload)).hexdigest(), h.hexdigest())
+
+    def test_str_is_rejected(self):
+        h = sha256()
+        with self.assertRaises(TypeError):
+            h.update("strings must be encoded before hashing")
+
+
 if __name__ == '__main__':
     unittest.main()
